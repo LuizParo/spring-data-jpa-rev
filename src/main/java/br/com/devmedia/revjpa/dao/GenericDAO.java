@@ -24,19 +24,11 @@ final class GenericDAO<T extends Serializable> {
     }
     
     List<T> find(String jpql, Object... params) {
-        TypedQuery<T> query = this.manager.createQuery(jpql, this.clazz);
-        for(int i = 0; i < params.length; i++) {
-            query.setParameter(i + 1, params[i]);
-        }
-        return query.getResultList();
+        return this.createQueryWithParams(jpql, params).getResultList();
     }
     
     T findOne(String jpql, Object... params) {
-        TypedQuery<T> query = this.manager.createQuery(jpql, this.clazz);
-        for(int i = 0; i < params.length; i++) {
-            query.setParameter(i + 1, params[i]);
-        }
-        return query.getSingleResult();
+        return this.createQueryWithParams(jpql, params).getSingleResult();
     }
     
     long count() {
@@ -61,5 +53,13 @@ final class GenericDAO<T extends Serializable> {
         this.manager.getTransaction().begin();
         this.manager.remove(obj);
         this.manager.getTransaction().commit();
+    }
+    
+    private TypedQuery<T> createQueryWithParams(String jpql, Object... params) {
+        TypedQuery<T> query = this.manager.createQuery(jpql, this.clazz);
+        for(int i = 0; i < params.length; i++) {
+            query.setParameter(i + 1, params[i]);
+        }
+        return query;
     }
 }
