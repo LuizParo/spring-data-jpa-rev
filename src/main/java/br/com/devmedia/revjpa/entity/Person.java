@@ -1,4 +1,4 @@
-package br.com.devmedia.entity;
+package br.com.devmedia.revjpa.entity;
 
 import java.io.Serializable;
 

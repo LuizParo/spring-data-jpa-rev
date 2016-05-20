@@ -31,8 +31,8 @@ final class GenericDAO<T extends Serializable> {
         return this.createQueryWithParams(jpql, params).getSingleResult();
     }
     
-    long count() {
-        return (long) this.manager.createQuery("select count(t) from " + this.clazz + " t", this.clazz).getSingleResult();
+    Long count() {
+        return this.manager.createQuery("select count(t) from " + this.clazz.getSimpleName() + " t", Long.class).getSingleResult();
     }
     
     void save(T entity) {
