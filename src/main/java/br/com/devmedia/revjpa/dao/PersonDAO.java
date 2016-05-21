@@ -20,12 +20,19 @@ public class PersonDAO {
         return this.dao.findAll();
     }
 
-    public List<Person> find(String jpql, Object... params) {
-        return this.dao.find(jpql, params);
+    public List<Person> findByLastName(String lastName) {
+        String jpql = "select p from Person p where p.lastName = ?";
+        return this.dao.find(jpql, lastName);
     }
-
-    public Person findOne(String jpql, Object... params) {
-        return this.dao.findOne(jpql, params);
+    
+    public List<Person> findAgeIsBetween(int min, int max) {
+        String jpql = "select p from Person p where p.age between ? and ?";
+        return this.dao.find(jpql, min, max);
+    }
+    
+    public Person findByFullName(String firstName, String lastName) {
+        String jpql = "select p from Person p where p.firstName = ? and p.lastName = ?";
+        return this.dao.findOne(jpql, firstName, lastName);
     }
 
     public Long count() {

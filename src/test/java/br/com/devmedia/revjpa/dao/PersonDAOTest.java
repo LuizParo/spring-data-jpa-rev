@@ -11,55 +11,81 @@ import br.com.devmedia.revjpa.entity.Person;
 
 public class PersonDAOTest {
     private PersonDAO dao;
-    private Person person;
+    private Person personOne;
+    private Person personTwo;
+    private Person personThree;
 
     @Before
     public void setUp() {
         this.dao = new PersonDAO();
-        this.person = new Person();
-        this.person.setFirstName("Luiz");
-        this.person.setLastName("Paro");
-        this.person.setAge(24);
+        this.personOne = new Person();
+        this.personOne.setFirstName("Luiz");
+        this.personOne.setLastName("Paro");
+        this.personOne.setAge(24);
+        
+        this.personTwo = new Person();
+        this.personTwo.setFirstName("João");
+        this.personTwo.setLastName("Silva");
+        this.personTwo.setAge(30);
+        
+        this.personThree = new Person();
+        this.personThree.setFirstName("Carlos");
+        this.personThree.setLastName("Paro");
+        this.personThree.setAge(22);
+        
+        this.dao.save(this.personOne);
+        this.dao.save(this.personTwo);
+        this.dao.save(this.personThree);
     }
     
     @After
     public void tearDown() {
-        this.dao.delete(this.person.getId());
-    }
-
-    @Test
-    public void shouldPersistPersonOnDatabase() {
-        this.dao.save(this.person);
-        Assert.assertNotNull(this.person.getId());
+        this.dao.delete(this.personOne.getId());
+        this.dao.delete(this.personTwo.getId());
+        this.dao.delete(this.personThree.getId());
     }
     
     @Test
     public void shouldFindPersonByItsId() {
-        this.dao.save(this.person);
-        Person recoveredPerson = this.dao.findById(this.person.getId());
-        
+        Person recoveredPerson = this.dao.findById(this.personOne.getId());
         Assert.assertNotNull(recoveredPerson);
     }
     
     @Test
     public void shouldFindAllPeople() {
-        this.dao.save(this.person);
         List<Person> allPerson = this.dao.findAll();
         Assert.assertFalse(allPerson.isEmpty());
-        Assert.assertEquals(1, allPerson.size());
+        Assert.assertEquals(3, allPerson.size());
     }
     
     @Test
     public void shouldCountPeopleOnDatabase() {
-        this.dao.save(this.person);
-        Assert.assertEquals(new Long(1L), this.dao.count());
+        Assert.assertEquals(new Long(3L), this.dao.count());
+    }
+    
+    @Test
+    public void shouldRecoverPeopleByLastName() {
+        List<Person> peopleWithSameLastName = this.dao.findByLastName("Paro");
+        Assert.assertFalse(peopleWithSameLastName.isEmpty());
+        Assert.assertEquals(2, peopleWithSameLastName.size());
+    }
+    
+    @Test
+    public void shouldRecoverPeopleBetweenAge() {
+        List<Person> peopleWithAgeRange = this.dao.findAgeIsBetween(24, 30);
+        Assert.assertFalse(peopleWithAgeRange.isEmpty());
+        Assert.assertEquals(2, peopleWithAgeRange.size());
+    }
+    
+    @Test
+    public void shouldRecoverPersonByFullName() {
+        Assert.assertEquals(this.personOne, this.dao.findByFullName("Luiz", "Paro"));
     }
     
     @Test
     public void shouldUpdatePersonOnDatabase() {
-        this.dao.save(this.person);
-        this.person.setFirstName("Carlos");
-        this.dao.update(this.person);
-        Assert.assertEquals("Carlos", this.dao.findById(this.person.getId()).getFirstName());
+        this.personOne.setFirstName("Mario");
+        this.dao.update(this.personOne);
+        Assert.assertEquals("Mario", this.dao.findById(this.personOne.getId()).getFirstName());
     }
 }
