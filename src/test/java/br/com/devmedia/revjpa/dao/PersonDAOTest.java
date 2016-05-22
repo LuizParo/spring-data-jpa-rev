@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.devmedia.revjpa.entity.Document;
 import br.com.devmedia.revjpa.entity.Person;
 
 public class PersonDAOTest {
@@ -53,9 +54,9 @@ public class PersonDAOTest {
     
     @Test
     public void shouldFindAllPeople() {
-        List<Person> allPerson = this.dao.findAll();
-        Assert.assertFalse(allPerson.isEmpty());
-        Assert.assertEquals(3, allPerson.size());
+        List<Person> allPeople = this.dao.findAll();
+        Assert.assertFalse(allPeople.isEmpty());
+        Assert.assertEquals(3, allPeople.size());
     }
     
     @Test
@@ -87,5 +88,21 @@ public class PersonDAOTest {
         this.personOne.setFirstName("Mario");
         this.dao.update(this.personOne);
         Assert.assertEquals("Mario", this.dao.findById(this.personOne.getId()).getFirstName());
+    }
+    
+    @Test
+    public void shouldPersistPersonWithDocument() {
+        this.personOne.setDocument(new Document("852.987.456-21", "54.962.951-41"));
+        this.dao.update(this.personOne);
+        
+        Assert.assertNotNull(this.personOne.getDocument().getId());
+    }
+    
+    @Test
+    public void shouldRecoverPersonByItsCpf() {
+        this.personOne.setDocument(new Document("852.987.456-21", "54.962.951-41"));
+        this.dao.update(this.personOne);
+        
+        Assert.assertEquals(this.personOne, this.dao.findByCpf("852.987.456-21"));
     }
 }

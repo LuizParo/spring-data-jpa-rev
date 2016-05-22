@@ -34,6 +34,11 @@ public class PersonDAO {
         String jpql = "select p from Person p where p.firstName = ? and p.lastName = ?";
         return this.dao.findOne(jpql, firstName, lastName);
     }
+    
+    public Person findByCpf(String cpf) {
+        String jpql = "select p from Person p where p.document.cpf = ?";
+        return this.dao.findOne(jpql, cpf);
+    }
 
     public Long count() {
         return this.dao.count();

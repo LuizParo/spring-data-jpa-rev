@@ -2,12 +2,15 @@ package br.com.devmedia.revjpa.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +34,10 @@ public class Person implements Serializable {
     
     @Column(name = "age", nullable = false)
     private Integer age;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_document")
+    private Document document;
 
     public Long getId() {
         return id;
@@ -63,6 +70,14 @@ public class Person implements Serializable {
     public void setAge(Integer age) {
         this.age = age;
     }
+    
+    public Document getDocument() {
+        return document;
+    }
+    
+    public void setDocument(Document document) {
+        this.document = document;
+    }
 
     @Override
     public int hashCode() {
@@ -88,9 +103,10 @@ public class Person implements Serializable {
             return false;
         return true;
     }
-
+    
     @Override
     public String toString() {
-        return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + "]";
+        return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", age=" + age
+                + ", document=" + document + "]";
     }
 }
