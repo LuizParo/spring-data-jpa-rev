@@ -11,29 +11,18 @@ import br.com.devmedia.revjpa.entity.Document;
 import br.com.devmedia.revjpa.entity.Person;
 
 public class PersonDAOTest {
-    private PersonDAO dao;
     private Person personOne;
     private Person personTwo;
     private Person personThree;
+    private PersonDAO dao;
 
     @Before
     public void setUp() {
+        this.personOne = new Person("Luiz", "Paro", 24);
+        this.personTwo = new Person("João", "Silva", 30);
+        this.personThree = new Person("Carlos", "Paro", 22);
+        
         this.dao = new PersonDAO();
-        this.personOne = new Person();
-        this.personOne.setFirstName("Luiz");
-        this.personOne.setLastName("Paro");
-        this.personOne.setAge(24);
-        
-        this.personTwo = new Person();
-        this.personTwo.setFirstName("João");
-        this.personTwo.setLastName("Silva");
-        this.personTwo.setAge(30);
-        
-        this.personThree = new Person();
-        this.personThree.setFirstName("Carlos");
-        this.personThree.setLastName("Paro");
-        this.personThree.setAge(22);
-        
         this.dao.save(this.personOne);
         this.dao.save(this.personTwo);
         this.dao.save(this.personThree);

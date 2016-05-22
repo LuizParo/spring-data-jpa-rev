@@ -1,6 +1,8 @@
 package br.com.devmedia.revjpa.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -38,6 +41,28 @@ public class Person implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_document")
     private Document document;
+    
+    @OneToMany(mappedBy = "person")
+    private List<Phone> phones;
+    
+    @Deprecated
+    public Person() {
+        // Default constructor for JPA
+    }
+    
+    public Person(String firstName, String lastName, Integer age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
+    
+    public void addPhone(Phone phone) {
+        if(this.phones == null) {
+            this.phones = new ArrayList<>();
+        }
+        phone.setPerson(this);
+        this.phones.add(phone);
+    }
 
     public Long getId() {
         return id;
@@ -77,6 +102,14 @@ public class Person implements Serializable {
     
     public void setDocument(Document document) {
         this.document = document;
+    }
+    
+    public List<Phone> getPhones() {
+        return phones;
+    }
+    
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
     @Override
