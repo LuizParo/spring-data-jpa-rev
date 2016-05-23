@@ -55,6 +55,12 @@ final class GenericDAO<T extends Serializable> {
         this.manager.getTransaction().commit();
     }
     
+    void delete(T entity) {
+        this.manager.getTransaction().begin();
+        this.manager.remove(this.manager.merge(entity));
+        this.manager.getTransaction().commit();
+    }
+    
     private TypedQuery<T> createQueryWithParams(String jpql, Object... params) {
         TypedQuery<T> query = this.manager.createQuery(jpql, this.clazz);
         for(int i = 0; i < params.length; i++) {

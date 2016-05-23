@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -42,8 +44,16 @@ public class Person implements Serializable {
     @JoinColumn(name = "id_document")
     private Document document;
     
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Phone> phones;
+    
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "person_address",
+            joinColumns = @JoinColumn(referencedColumnName = "id_person"),
+            inverseJoinColumns = @JoinColumn(referencedColumnName = "id_address")
+    )
+    private List<Address> addresses;
     
     @Deprecated
     public Person() {
@@ -62,6 +72,12 @@ public class Person implements Serializable {
         }
         phone.setPerson(this);
         this.phones.add(phone);
+    }
+    
+    public void delPhone(Phone phone) {
+        if(this.phones != null) {
+            this.phones.remove(phone);
+        }
     }
 
     public Long getId() {
@@ -110,6 +126,14 @@ public class Person implements Serializable {
     
     public void setPhones(List<Phone> phones) {
         this.phones = phones;
+    }
+    
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+    
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override
