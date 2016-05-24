@@ -42,6 +42,13 @@ public class AddressDAOTest {
     }
     
     @Test
+    public void shouldFindAddressByItsCity() {
+        List<Address> addresses = this.addressDAO.findByCity("São Paulo");
+        Assert.assertEquals(1, addresses.size());
+        Assert.assertEquals("São Paulo", addresses.get(0).getCity());
+    }
+    
+    @Test
     public void shouldFindAllAddresses() {
         List<Address> allAddresses = this.addressDAO.findAll();
         Assert.assertFalse(allAddresses.isEmpty());

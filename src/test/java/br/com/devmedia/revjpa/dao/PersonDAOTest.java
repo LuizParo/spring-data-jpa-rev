@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.devmedia.revjpa.entity.Address;
+import br.com.devmedia.revjpa.entity.Address.TypeAddress;
 import br.com.devmedia.revjpa.entity.Document;
 import br.com.devmedia.revjpa.entity.Person;
 
@@ -93,5 +95,17 @@ public class PersonDAOTest {
         this.dao.update(this.personOne);
         
         Assert.assertEquals(this.personOne, this.dao.findByCpf("852.987.456-21"));
+    }
+    
+    @Test
+    public void shouldPersistPersonWithTwoPhones() {
+        this.personOne.addAddress(new Address("São Paulo", "Street Test", TypeAddress.COMMERCIAL));
+        this.personOne.addAddress(new Address("São Paulo", "Street Test Two", TypeAddress.RESIDENTIAL));
+        this.dao.update(this.personOne);
+        
+        Assert.assertEquals(2, this.personOne.getAddresses().size());
+        for (Address address : this.personOne.getAddresses()) {
+            Assert.assertNotNull(address.getId());
+        }
     }
 }

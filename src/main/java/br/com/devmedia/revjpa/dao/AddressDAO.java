@@ -19,6 +19,10 @@ public class AddressDAO {
     public List<Address> findAll() {
         return this.dao.findAll();
     }
+    
+    public List<Address> findByCity(String city) {
+        return this.dao.find("select a from Address a where a.city = ?", city);
+    }
 
     public Long count() {
         return this.dao.count();

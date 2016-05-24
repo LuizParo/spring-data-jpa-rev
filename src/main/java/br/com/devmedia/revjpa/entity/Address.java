@@ -46,6 +46,11 @@ public class Address implements Serializable {
     )
     private List<Person> people;
     
+    @Deprecated
+    public Address() {
+        // Default constructor for JPA
+    }
+    
     public Address(String city, String street, TypeAddress type) {
         this.city = city;
         this.street = street;

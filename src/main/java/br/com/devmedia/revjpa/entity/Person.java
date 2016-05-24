@@ -45,7 +45,7 @@ public class Person implements Serializable {
     private Document document;
     
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Phone> phones;
+    private List<Phone> phones = new ArrayList<>();
     
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -53,7 +53,7 @@ public class Person implements Serializable {
             joinColumns = @JoinColumn(name = "id_person"),
             inverseJoinColumns = @JoinColumn(name = "id_address")
     )
-    private List<Address> addresses;
+    private List<Address> addresses = new ArrayList<>();
     
     @Deprecated
     public Person() {
@@ -78,6 +78,13 @@ public class Person implements Serializable {
         if(this.phones != null) {
             this.phones.remove(phone);
         }
+    }
+    
+    public void addAddress(Address address) {
+        if(this.addresses == null) {
+            this.addresses = new ArrayList<>();
+        }
+        this.addresses.add(address);
     }
 
     public Long getId() {
