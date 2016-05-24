@@ -50,8 +50,8 @@ public class Person implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "person_address",
-            joinColumns = @JoinColumn(referencedColumnName = "id_person"),
-            inverseJoinColumns = @JoinColumn(referencedColumnName = "id_address")
+            joinColumns = @JoinColumn(name = "id_person"),
+            inverseJoinColumns = @JoinColumn(name = "id_address")
     )
     private List<Address> addresses;
     

@@ -13,30 +13,30 @@ public class AddressDAO {
     }
 
     public Address findById(Long id) {
-        return dao.findById(id);
+        return this.dao.findById(id);
     }
 
     public List<Address> findAll() {
-        return dao.findAll();
+        return this.dao.findAll();
     }
 
     public Long count() {
-        return dao.count();
+        return this.dao.count();
     }
 
     public void save(Address entity) {
-        dao.save(entity);
+        this.dao.save(entity);
     }
 
     public void update(Address entity) {
-        dao.update(entity);
+        this.dao.update(entity);
     }
 
     public void delete(Long id) {
-        dao.delete(id);
+        this.dao.delete(id);
     }
 
     public void delete(Address entity) {
-        dao.delete(entity);
+        this.dao.delete(entity);
     }
 }

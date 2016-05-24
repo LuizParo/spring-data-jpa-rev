@@ -41,10 +41,16 @@ public class Address implements Serializable {
     @ManyToMany
     @JoinTable(
             name = "person_address",
-            joinColumns = @JoinColumn(columnDefinition = "id_address"),
-            inverseJoinColumns = @JoinColumn(columnDefinition = "id_person")
+            joinColumns = @JoinColumn(name = "id_address"),
+            inverseJoinColumns = @JoinColumn(name = "id_person")
     )
     private List<Person> people;
+    
+    public Address(String city, String street, TypeAddress type) {
+        this.city = city;
+        this.street = street;
+        this.type = type;
+    }
     
     public Long getId() {
         return id;
